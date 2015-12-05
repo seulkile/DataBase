@@ -75,6 +75,7 @@ public class ActualTripStopInfo {
               )
             {
                 //throw new SQLException("No records found!");
+                System.out.println("No record");
             }
             
             System.out.print("Enter the StopNumber (int) : ");
@@ -88,16 +89,13 @@ public class ActualTripStopInfo {
             int numberOfPassengerIn = kb.nextInt();
             System.out.print("Enter the NumberOfPassengerOut (int) : ");
             int numberOfPassengerOut = kb.nextInt();
-            stmt.executeUpdate("INSERT INTO ActualTripStopInfo(TripNumber,"
-                + " [Date], ScheduledStartTime, StopNumber,"
-                + " ScheduledArrivalTime, ActualStartTime, ActualArrivalTime,"
-                + " NumberOfPassengerIn, NumberOfPassengerOut)"
-                + " SELECT " + rsTripNumber + ", " + rsDate + ", "
-                + rsScheduledStartTime + ", " + stopNumber + ", "
-                + rsScheduledArrivalTime + ", " + actualStartTime + ", "
-                + actualArrivalTime + ", " + numberOfPassengerIn + ", "
-                + numberOfPassengerIn + ", " + numberOfPassengerOut
-                + " From TripOffering");
+              
+                 
+            stmt.executeUpdate("INSERT INTO ActualTripStopInfo VALUES " 
+                    +"('"+ tripNumber + "', '"+ date +"', '" + scheduledStartTime +
+                    "', '" + stopNumber + "' , '" + rsScheduledArrivalTime+ "', '" +  actualStartTime + "', '" + 
+                    actualArrivalTime + "', '" + numberOfPassengerIn + "', '" +
+                    numberOfPassengerOut + "')");
         }   /////////////////////////SOMETHING WRONG WITH SCHEDULEDARRIVALTIME
         catch(SQLException e)
         {
