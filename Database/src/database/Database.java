@@ -61,9 +61,6 @@ public class Database {
                 + "5.Add a driver \n"
                 + "6.Add a bus \n"
                 + "7.Delete a bus \n"
-                + "5.Add a bus \n"
-                + "6.Delete a bus \n"
-                + "7.Add Driver\n"
                 + "8.Record the actual data of a given trip offering\n"
                 + "9.Exit");
         int option = kb.nextInt();
