@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author Seulki
+ * @author Seulki + Raymond
  */
 public class Database {
 
@@ -24,12 +24,12 @@ public class Database {
         // load the Jdbc-Odbc driver.
         try {
             Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
-        } catch (ClassNotFoundException cnfe) {
-            cnfe.printStackTrace(System.err);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace(System.err);
         }
 
-        Connection con = null;
-        Statement stmt = null;
+        Connection con;
+        Statement stmt;
 
         try {
             // Connect to the Profile database
@@ -37,6 +37,10 @@ public class Database {
 
             // Create statement objects.
             stmt = con.createStatement();
+            
+            // Create stops.
+            createStops(stmt);
+            
             while (flag) {
                 int option = printMenu();
                 Menu(stmt,option);
@@ -52,12 +56,13 @@ public class Database {
         System.out.println("Welcome to the Pomona Transit System.\n"
                 + "1.Display all Trip \n"
                 + "2.Edit the schedule\n"
-                + "3.Display the stop \n"
+                + "3.Display the stops of a given driver and date \n"
                 + "4.Display the weekly schedule of a given driver and date\n"
-                + "5.Add a bus \n"
-                + "6.Delete a bus \n"
-                + "7.Record the actual data of a given trip offering\n"
-                + "8.Exit");
+                + "5.Add a driver \n"
+                + "6.Add a bus \n"
+                + "7.Delete a bus \n"
+                + "8.Record the actual data of a given trip offering\n"
+                + "9.Exit");
         int option = kb.nextInt();
         kb.nextLine();
         return option;
@@ -67,29 +72,40 @@ public class Database {
         switch (option) {
             case 1: //display all trip 
                 break;
-            case 2:  //Eidt the schedule
+            case 2:  //Edit the schedule
                 break;
             case 3:  //Display the stop
                 break;
             case 4: // display the weekly schedule
                 break;
-            case 5: //add bus 
+            case 5: // add a drive
+                Driver driver = new Driver(stmt);
+                driver.addDriver();
+                break;
+            case 6: //add bus
                 Bus bus = new Bus(stmt);
                 bus.addBus();
                 break;
-            case 6: //delete bus
+            case 7: //delete bus
                 Bus bus1 = new Bus(stmt);
                 bus1.deleteBus();
                 break;
-            case 7: //record the actual data of a given trip offering
+            case 8: //record the actual data of a given trip offering
+                ActualTripStopInfo ATSI = new ActualTripStopInfo(stmt);
+                ATSI.recordActualTripStopInfo();
                 break;
-            case 8: //exit
+            case 9: //exit
                 flag = false;
                 break;
             default:
                 System.out.println("It is an invalid input.");
                 break;
         }
+    }
+    private void createStops(Statement stmt) throws SQLException
+    {
+        Stop stop = new Stop(stmt);
+        //stop.addStop("47", "3801 W. Temple Avenue.");
     }
 
     /**

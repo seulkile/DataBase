@@ -7,14 +7,14 @@ package database;
 
 /**
  *
- * @author Seulki
+ * @author Seulki + Raymond
  */
 import java.sql.*;
 import java.util.Scanner;
 
 public class Bus {
 
-    private Statement stmt;
+    private final Statement stmt;
     Scanner kb = new Scanner(System.in);
 
     public Bus(Statement stmt) {
@@ -23,9 +23,9 @@ public class Bus {
 
     public void makeTable() throws SQLException {
         String createBus = "CREATE TABLE Bus "
-                + "( busId INT NOT NULL,  "
-                + "  model VARCHAR(50) NOT NULL,  "
-                + "  year INT NOT NULL "
+                + "( BusId INT PRIMARY KEY,  "
+                + "  Model VARCHAR(50) NOT NULL,  "
+                + "  Year INT NOT NULL "
                 + ")";
         stmt.execute(createBus);
     }
@@ -36,7 +36,7 @@ public class Bus {
         int busId = kb.nextInt();
         System.out.print("Enter a Bus model : ");
         String model = kb.nextLine();
-        System.out.print("Enter a Bus yesr : ");
+        System.out.print("Enter a Bus year : ");
         int year = kb.nextInt();
         stmt.execute("INSERT INTO Bus VALUES "
                 + "('" + busId + "', '" + model + "', '" + year + "')");
