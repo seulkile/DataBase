@@ -56,8 +56,9 @@ public class Database {
                 + "4.Display the weekly schedule of a given driver and date\n"
                 + "5.Add a bus \n"
                 + "6.Delete a bus \n"
-                + "7.Record the actual data of a given trip offering\n"
-                + "8.Exit");
+                + "7.Add Driver\n"
+                + "8.Record the actual data of a given trip offering\n"
+                + "9.Exit");
         int option = kb.nextInt();
         kb.nextLine();
         return option;
@@ -81,9 +82,13 @@ public class Database {
                 Bus bus1 = new Bus(stmt);
                 bus1.deleteBus();
                 break;
-            case 7: //record the actual data of a given trip offering
+            case 7: //add driver
+                Driver driver = new Driver(stmt);
+                driver.addDriver();
                 break;
-            case 8: //exit
+            case 8://record the actual data of a given trip offering
+                break;
+            case 9: //exit
                 flag = false;
                 break;
             default:
