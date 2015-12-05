@@ -71,32 +71,51 @@ public class ActualTripStopInfo {
                     rsTripNumber == 0 || (rsDate == null || rsDate.isEmpty())
                     || rsScheduledStartTime == null || rsScheduledStartTime.isEmpty()) {
                 //throw new SQLException("No records found!");
-                System.out.println("No record");
+                System.err.println("No record");
 
             } else {
 
                 System.out.print("Enter the StopNumber (int) : ");
                 int stopNumber = kb.nextInt();
-                kb.nextLine(); // resets caret
-                System.out.print("Enter the ActualStartTime : ");
-                String actualStartTime = kb.nextLine();
-                System.out.print("Enter the ActualArrivalTime : ");
-                String actualArrivalTime = kb.nextLine();
-                System.out.print("Enter the NumberOfPassengerIn (int) : ");
-                int numberOfPassengerIn = kb.nextInt();
-                System.out.print("Enter the NumberOfPassengerOut (int) : ");
-                int numberOfPassengerOut = kb.nextInt();
+                if (checkingStop(stopNumber)) {
+                    kb.nextLine(); // resets caret
+                    System.out.print("Enter the ActualStartTime : ");
+                    String actualStartTime = kb.nextLine();
+                    System.out.print("Enter the ActualArrivalTime : ");
+                    String actualArrivalTime = kb.nextLine();
+                    System.out.print("Enter the NumberOfPassengerIn (int) : ");
+                    int numberOfPassengerIn = kb.nextInt();
+                    System.out.print("Enter the NumberOfPassengerOut (int) : ");
+                    int numberOfPassengerOut = kb.nextInt();
 
-                stmt.executeUpdate("INSERT INTO ActualTripStopInfo VALUES "
-                        + "('" + tripNumber + "', '" + date + "', '" + scheduledStartTime
-                        + "', '" + stopNumber + "' , '" + rsScheduledArrivalTime + "', '" + actualStartTime + "', '"
-                        + actualArrivalTime + "', '" + numberOfPassengerIn + "', '"
-                        + numberOfPassengerOut + "')");
+                    stmt.executeUpdate("INSERT INTO ActualTripStopInfo VALUES "
+                            + "('" + tripNumber + "', '" + date + "', '" + scheduledStartTime
+                            + "', '" + stopNumber + "' , '" + rsScheduledArrivalTime + "', '" + actualStartTime + "', '"
+                            + actualArrivalTime + "', '" + numberOfPassengerIn + "', '"
+                            + numberOfPassengerOut + "')");
+                } else {
+                    System.err.println("There is no record for the stop");
+                }
             }
         } /////////////////////////SOMETHING WRONG WITH SCHEDULEDARRIVALTIME
         catch (SQLException e) {
             e.printStackTrace(System.err);
         }
+    }
+
+    private boolean checkingStop(int stopNumber) throws SQLException {
+        ResultSet rs;
+        String sql = "SELECT StopNumber FROM Stop WHERE StopNumber = "
+                + stopNumber + " ";
+        rs = stmt.executeQuery(sql);
+        int rsStopNumber = 0;
+        while (rs.next()) {
+            rsStopNumber = rs.getInt("StopNumber");
+        }
+        if (rsStopNumber == 0) {
+            return false;
+        }
+        return true;
     }
     /*INSERT INTO ActualTripStopInfo(TripNumber, [Date], ScheduledStartTime, StopNumber, ScheduledArrivalTime, ActualStartTime, ActualArrivalTime, NumberOfPassengerIn, NumberOfPassengerOut)
      SELECT TripNumber, Date, ScheduledStartTime, 47, "7:30AM", "7:04AM", "7:40AM", 3, 10

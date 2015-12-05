@@ -22,24 +22,49 @@ public class Driver {
     }
 
     public void makeTable() throws SQLException {
-    	String createDriver = "CREATE TABLE Driver " +
-				"(driverName VARCHAR(50) PRIMARY KEY, "+
-				"DriverTelephoneNumber VARCHAR(15) NOT NULL)";
+        String createDriver = "CREATE TABLE Driver "
+                + "(driverName VARCHAR(50) PRIMARY KEY, "
+                + "DriverTelephoneNumber VARCHAR(15) NOT NULL)";
         stmt.execute(createDriver);
     }
 
     public void addDriver() throws SQLException {
         System.out.print("Enter a driverName : ");
         String driverName = kb.nextLine();
-        System.out.print("Enter a DriverTelephoneNumber : ");
-        String driverNumber = kb.nextLine();
-        stmt.execute("INSERT INTO Driver VALUES "
-                + "('" + driverName + "', '" + driverNumber + "')");
+        if (!checkingDriver(driverName)) {
+            System.out.print("Enter a DriverTelephoneNumber : ");
+            String driverNumber = kb.nextLine();
+            stmt.execute("INSERT INTO Driver VALUES "
+                    + "('" + driverName + "', '" + driverNumber + "')");
+        } else {
+            System.err.println("Driver already exist.");
+        }
     }
 
     public void deleteDriver() throws SQLException {
         System.out.print("Enter a driverName : ");
         String driverName = kb.nextLine();
-        stmt.executeUpdate("DELETE * FROM driverName WHERE driverName = "+driverName+"; ");
+        if (checkingDriver(driverName)) {
+            stmt.executeUpdate("DELETE * FROM driverName WHERE driverName = " + driverName + "; ");
+        } else {
+            System.err.println("The driver does not exist.");
+        }
+    }
+
+    private boolean checkingDriver(String name) throws SQLException {
+        ResultSet rs;
+        String sql = "SELECT DriverName FROM Driver WHERE DriverName = '"
+                + name + "' ";
+        rs = stmt.executeQuery(sql);
+        String rsName = "";
+        while (rs.next()) {
+            rsName = rs.getString("DriverName");
+            
+        }
+        System.out.println(rsName);
+        if (rsName == "") {
+            return false;
+        }
+        return true;
     }
 }
