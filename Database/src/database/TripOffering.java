@@ -5,8 +5,6 @@
  */
 package database;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -40,11 +38,11 @@ public class TripOffering {
                 + "= Trip.TripNumber WHERE TripOffering.[Date] = '" + date + "' AND "
                 + "Trip.StartLocationName = '" + startLocation + "' AND "
                 + "Trip.DestinationName = '" + destination + "'");
-        System.out.printf("%-15s %s\n", "Date : ", date);
         System.out.printf("%-15s %s\n", "StartLocation : ", startLocation);
         System.out.printf("%-15s %s\n", "Destination : ", destination);
-        System.out.printf("%-15s %-25s %-25s %-10s %-10s\n", "TripNumber",
-                "ScheduledStratTime", "ScheduledArrivalTime", "DriveName", "BusId");
+        System.out.printf("%-15s %s\n", "Date : ", date);
+        System.out.printf("%-25s %-25s %-10s %-10s\n",
+                "ScheduledStartTime", "ScheduledArrivalTime", "DriverName", "BusId");
         int rsTripNumber = 0;
         String rsStartTime = "";
         String rsArrivalTime = "";
@@ -55,8 +53,8 @@ public class TripOffering {
             rsStartTime = rs.getString("ScheduledStartTime");
             rsArrivalTime = rs.getString("ScheduledArrivalTime");
             rsDriverName = rs.getString("DriverName");
-            rsBusId = rs.getInt("BusId");
-            System.out.printf("%-15d %-25s %-25s %-10s %-25d\n", rsTripNumber, rsStartTime,
+            rsBusId = rs.getInt("BusId");   //Did not ask for trip number but let's talk about it
+            System.out.printf("%-25s %-25s %-10s %-25d\n", rsStartTime,
                     rsArrivalTime, rsDriverName, rsBusId);
         }
         rs.close();
@@ -247,5 +245,44 @@ public class TripOffering {
             return true;
         }
         return false;
+    }
+    
+    public void displayWeeklySchedule() throws SQLException {
+        System.out.print("Enter the driver name : ");
+        String driverName = kb.nextLine();
+        System.out.print("Enter the Date : ");
+        String date = kb.nextLine();
+        ResultSet rs = stmt.executeQuery("SELECT TripOffering.TripNumber,"
+                + " TripOffering.[Date],"
+                + " TripOffering.ScheduledStartTime,"
+                + " TripOffering.ScheduledArrivalTime,"
+                + " TripOffering.DriverName, TripOffering.BusID,"
+                + " Trip.StartLocationName, Trip.DestinationName"
+                + " FROM TripOffering, Trip"
+                + " WHERE TripOffering.DriverName = '" + driverName + "'"
+                + " AND TripOffering.[Date] = '" + date + "' AND Trip.TripNumber = TripOffering.TripNumber");
+//        System.out.printf("%-15s %s\n", "Date : ", date);
+//        System.out.printf("%-15s %s\n", "StartLocation : ", startLocation);
+//        System.out.printf("%-15s %s\n", "Destination : ", destination);
+        System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s %-20s\n",
+                "Date", "StartLocation", "Destination Name", "Scheduled Start Time", "ScheduledArrivalTime", "DriverName", "BusId");
+        
+        String rsStartTime = "";
+        String rsArrivalTime = "";
+        String rsDriverName = "";
+        String rsStartLocation = "";
+        String rsDestination = "";
+        int rsBusId = 0;
+        while (rs.next()) {
+            rsStartTime = rs.getString("ScheduledStartTime");
+            rsArrivalTime = rs.getString("ScheduledArrivalTime");
+            rsDriverName = rs.getString("DriverName");
+            rsBusId = rs.getInt("BusId");
+            rsStartLocation = rs.getString("StartLocationName");
+            rsDestination = rs.getString("DestinationName");
+            System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s %-20s\n", date, rsStartLocation, rsDestination, rsStartTime,
+                    rsArrivalTime, rsDriverName, rsBusId);
+        }
+        rs.close();
     }
 }

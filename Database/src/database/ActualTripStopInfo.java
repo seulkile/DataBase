@@ -104,7 +104,7 @@ public class ActualTripStopInfo {
             }
             rs.close();
 
-        } /////////////////////////SOMETHING WRONG WITH SCHEDULEDARRIVALTIME
+        }
 
     }
 

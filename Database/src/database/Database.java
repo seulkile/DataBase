@@ -38,10 +38,7 @@ public class Database {
 
             // Create statement objects.
             stmt = con.createStatement();
-            
-            // Create stops.
-            createStops(stmt);
-            
+                     
             while (flag) {
                 int option = printMenu();
                 Menu(stmt,option);
@@ -93,6 +90,8 @@ public class Database {
                 tr.displayStopInfo();
                 break;
             case 4: // display the weekly schedule
+                TripOffering weeklySchedule = new TripOffering(stmt);
+                weeklySchedule.displayWeeklySchedule();
                 break;
             case 5: // add a driver
                 Driver driver = new Driver(stmt);
@@ -117,11 +116,6 @@ public class Database {
                 System.out.println("It is an invalid input.");
                 break;
         }
-    }
-    private void createStops(Statement stmt) throws SQLException
-    {
-        Stop stop = new Stop(stmt);
-        //stop.addStop("47", "3801 W. Temple Avenue.");
     }
 
     /**
