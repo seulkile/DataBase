@@ -42,7 +42,7 @@ public class TripStopInfo {
             rsStopNumber = rs.getInt("StopNumber");
             rsSeNumber = rs.getInt("SequenceNumber");
             DrivingTime = rs.getString("DrivingTime");
-            System.out.printf("%-15d %-15d %-15d %-15s\n" , rsTripNumber,rsStopNumber,
+            System.out.printf("%-15d %-15d %-15d %-15s\n\n" , rsTripNumber,rsStopNumber,
                     rsSeNumber,DrivingTime);
         }
         

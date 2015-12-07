@@ -44,7 +44,7 @@ public class Database {
             
             while (flag) {
                 int option = printMenu();
-                Menu(stmt,option);
+                Menu(stmt,option ,con);
             }
             stmt.close();
             con.close();
@@ -69,9 +69,11 @@ public class Database {
         return option;
     }
 
-    private void Menu(Statement stmt, int option) throws SQLException, ParseException {
+    private void Menu(Statement stmt, int option , Connection con) throws SQLException, ParseException {
         switch (option) {
             case 1: //display all trip 
+                TripOffering tripOffering = new TripOffering(stmt,con);
+                tripOffering.searchTheTripOffering();
                 break;
             case 2:  //Edit the schedule
                 break;
@@ -117,7 +119,6 @@ public class Database {
     public static void main(String[] args) throws ParseException {
         Database db = new Database();
         db.start();
-
     }
 
 }

@@ -167,11 +167,9 @@ public class ActualTripStopInfo {
         }
         rs.close();
         if (rsTripNumber == 0 || (rsDate == null || rsDate.isEmpty())
-                || rsScheduledStartTime == null || rsScheduledStartTime.isEmpty()) {
-            
+                || rsScheduledStartTime == null || rsScheduledStartTime.isEmpty()) {        
             return true;
-        }
-        
+        }  
         return false;
     }
     /*INSERT INTO ActualTripStopInfo(TripNumber, [Date], ScheduledStartTime, StopNumber, ScheduledArrivalTime, ActualStartTime, ActualArrivalTime, NumberOfPassengerIn, NumberOfPassengerOut)
