@@ -62,7 +62,7 @@ public class Driver {
             
         }
         System.out.println(rsName);
-        if (rsName == "") {
+        if (rsName.equals("")) {
             return false;
         }
         return true;
