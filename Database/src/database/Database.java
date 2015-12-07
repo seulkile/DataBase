@@ -44,7 +44,7 @@ public class Database {
             
             while (flag) {
                 int option = printMenu();
-                Menu(stmt,option ,con);
+                Menu(stmt,option);
             }
             stmt.close();
             con.close();
@@ -68,14 +68,25 @@ public class Database {
         kb.nextLine();
         return option;
     }
+    
+    private int printTripOfferingMenu(){
+        System.out.println("1.Delete a tripOffering \n"
+                + "2.Add trips\n"
+                + "3.Change the Driver \n"
+                + "4.Change the Bus");
+        int option = kb.nextInt();
+        return option;
+    }
 
-    private void Menu(Statement stmt, int option , Connection con) throws SQLException, ParseException {
+    private void Menu(Statement stmt, int option) throws SQLException, ParseException {
         switch (option) {
             case 1: //display all trip 
-                TripOffering tripOffering = new TripOffering(stmt,con);
+                TripOffering tripOffering = new TripOffering(stmt);
                 tripOffering.searchTheTripOffering();
                 break;
             case 2:  //Edit the schedule
+                int offeringOption = printTripOfferingMenu();
+                offeringMenu(stmt, offeringOption);
                 break;
             case 3:  //Display the stop
                 TripStopInfo tr = new TripStopInfo(stmt);
@@ -119,6 +130,25 @@ public class Database {
     public static void main(String[] args) throws ParseException {
         Database db = new Database();
         db.start();
+    }
+
+    private void offeringMenu(Statement stmt, int offeringOption) throws SQLException {
+        TripOffering tr = new TripOffering(stmt);
+        switch(offeringOption){
+            case 1:  //delete a offering
+                tr.deleteTheRecord();
+                break;
+            case 2: //add a or offering(s).
+                tr.addTheRecord();
+                break;
+            case 3: //change the driver
+                break;
+            case 4:  //change the bus
+                break;
+            default:
+                System.out.println("It is an invalid input.");
+                break;      
+        }
     }
 
 }
