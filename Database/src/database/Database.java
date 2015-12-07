@@ -9,6 +9,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.util.Scanner;
 
 /**
@@ -20,7 +21,7 @@ public class Database {
     Scanner kb = new Scanner(System.in);
     boolean flag = true;
 
-    public void start() {
+    public void start() throws ParseException {
         // load the Jdbc-Odbc driver.
         try {
             Class.forName("sun.jdbc.odbc.JdbcOdbcDriver");
@@ -56,7 +57,7 @@ public class Database {
         System.out.println("Welcome to the Pomona Transit System.\n"
                 + "1.Display all Trip \n"
                 + "2.Edit the schedule\n"
-                + "3.Display the stops of a given driver and date \n"
+                + "3.Display the stops of a given trip \n"
                 + "4.Display the weekly schedule of a given driver and date\n"
                 + "5.Add a driver \n"
                 + "6.Add a bus \n"
@@ -68,13 +69,15 @@ public class Database {
         return option;
     }
 
-    private void Menu(Statement stmt, int option) throws SQLException {
+    private void Menu(Statement stmt, int option) throws SQLException, ParseException {
         switch (option) {
             case 1: //display all trip 
                 break;
             case 2:  //Edit the schedule
                 break;
             case 3:  //Display the stop
+                TripStopInfo tr = new TripStopInfo(stmt);
+                tr.displayStopInfo();
                 break;
             case 4: // display the weekly schedule
                 break;
@@ -111,9 +114,10 @@ public class Database {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         Database db = new Database();
         db.start();
+
     }
 
 }

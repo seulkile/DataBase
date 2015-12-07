@@ -102,6 +102,7 @@ public class ActualTripStopInfo {
             } else {
                 System.err.println("There is no record for the stop");
             }
+            rs.close();
 
         } /////////////////////////SOMETHING WRONG WITH SCHEDULEDARRIVALTIME
 
@@ -142,6 +143,7 @@ public class ActualTripStopInfo {
                     + " WHERE StopNumber = "
                     + stopNumber + " AND TripNumber = " + tripNumber);
         }
+        rs.close();
 
     }
 
@@ -163,10 +165,13 @@ public class ActualTripStopInfo {
             rsScheduledArrivalTime = rs.getString("ScheduledArrivalTime");
             // System.out.println(rsScheduledArrivalTime);
         }
+        rs.close();
         if (rsTripNumber == 0 || (rsDate == null || rsDate.isEmpty())
                 || rsScheduledStartTime == null || rsScheduledStartTime.isEmpty()) {
+            
             return true;
         }
+        
         return false;
     }
     /*INSERT INTO ActualTripStopInfo(TripNumber, [Date], ScheduledStartTime, StopNumber, ScheduledArrivalTime, ActualStartTime, ActualArrivalTime, NumberOfPassengerIn, NumberOfPassengerOut)
