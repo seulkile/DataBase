@@ -142,8 +142,10 @@ public class Database {
                 tr.addTheRecord();
                 break;
             case 3: //change the driver
+                tr.changeDriver();
                 break;
             case 4:  //change the bus
+                tr.changeBus();
                 break;
             default:
                 System.out.println("It is an invalid input.");
