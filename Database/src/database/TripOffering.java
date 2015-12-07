@@ -129,8 +129,16 @@ public class TripOffering {
                 arrivalTime = kb.nextLine();
                 System.out.print("Enter the driver's Name : ");
                 driverName = kb.nextLine();
+                while (checkingDriver(driverName)) {
+                    System.out.print("Enter the driver's Name : ");
+                    driverName = kb.nextLine();
+                }
                 System.out.print("Enter the bus ID : ");
                 busId = kb.nextInt();
+                while (checkingBus(busId)) {
+                    System.out.print("Enter the bus Id : ");
+                    busId = kb.nextInt();
+                }
                 kb.nextLine();
                 stmt.executeUpdate("INSERT INTO TripOffering VALUES "
                         + "('" + tripNumber + "', '" + date + "', '" + startTime
@@ -150,6 +158,94 @@ public class TripOffering {
                 System.err.println("The record already exists");
             }
         } while (flag);
+    }
 
+    public void changeDriver() throws SQLException {
+        int tripNumber;
+        String date;
+        String startTime;
+        System.out.print("Enter the Trip Number : ");
+        tripNumber = kb.nextInt();
+        System.out.print("Enter the Date : ");
+        kb.nextLine();
+        date = kb.nextLine();
+        System.out.print("Enter the ScheduledStartTime : ");
+        startTime = kb.nextLine();
+        if (!checkingRecord(tripNumber, date, startTime)) {
+            System.out.print("Enter the Driver Name : ");
+            String name = kb.nextLine();
+            if (!checkingDriver(name)) {
+                stmt.executeUpdate("UPDATE TripOffering "
+                        + "SET DriverName = '" + name + "' "
+                        + "WHERE TripNumber = "
+                        + tripNumber + " AND [Date] = " + "'" + date + "'"
+                        + " AND ScheduledStartTime=" + "'" + startTime + "'");
+            } else {
+                System.err.println("The driver does not exists.");
+            }
+        } else {
+            System.err.println("The record does not exists.");
+        }
+    }
+
+    private boolean checkingDriver(String name) throws SQLException {
+        ResultSet rs = stmt.executeQuery("SELECT DriverName"
+                + " FROM Driver WHERE DriverName = '"
+                + name + "'");
+        String rsDriver = "";
+
+        while (rs.next()) {
+            rsDriver = rs.getString("DriverName");
+        }
+        rs.close();
+        if ((rsDriver == null || rsDriver.isEmpty())) {
+            return true;
+        }
+        return false;
+    }
+
+    public void changeBus() throws SQLException {
+        int tripNumber;
+        String date;
+        String startTime;
+        System.out.print("Enter the Trip Number : ");
+        tripNumber = kb.nextInt();
+        System.out.print("Enter the Date : ");
+        kb.nextLine();
+        date = kb.nextLine();
+        System.out.print("Enter the ScheduledStartTime : ");
+        startTime = kb.nextLine();
+        if (!checkingRecord(tripNumber, date, startTime)) {
+            System.out.print("Enter the BusId : ");
+            int busId = kb.nextInt();
+            if (!checkingBus(busId)) {
+                stmt.executeUpdate("UPDATE TripOffering "
+                        + "SET BusId = " + busId + " "
+                        + "WHERE TripNumber = "
+                        + tripNumber + " AND [Date] = " + "'" + date + "'"
+                        + " AND ScheduledStartTime=" + "'" + startTime + "'");
+            } else {
+                System.err.println("The Bus does not exists.");
+            }
+        } else {
+            System.err.println("The record does not exists.");
+        }
+
+    }
+
+    private boolean checkingBus(int busId) throws SQLException {
+        ResultSet rs = stmt.executeQuery("SELECT BusId"
+                + " FROM Bus WHERE BusId = "
+                + busId);
+        int rsBusId = 0;
+
+        while (rs.next()) {
+            rsBusId = rs.getInt("BusId");
+        }
+        rs.close();
+        if (rsBusId == 0) {
+            return true;
+        }
+        return false;
     }
 }
