@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author Seulki
+ * @author Seulki + Raymond
  */
 public class TripOffering {
 
@@ -34,15 +34,18 @@ public class TripOffering {
                 + " TripOffering.ScheduledStartTime,"
                 + " TripOffering.ScheduledArrivalTime,"
                 + " TripOffering.DriverName, TripOffering.BusId"
-                + " FROM TripOffering INNER JOIN Trip ON TripOffering.TripNumber "
-                + "= Trip.TripNumber WHERE TripOffering.[Date] = '" + date + "' AND "
+                + " FROM TripOffering INNER JOIN Trip ON"
+                + " TripOffering.TripNumber "
+                + "= Trip.TripNumber WHERE TripOffering.[Date] = '" + date
+                + "' AND "
                 + "Trip.StartLocationName = '" + startLocation + "' AND "
                 + "Trip.DestinationName = '" + destination + "'");
         System.out.printf("%-15s %s\n", "StartLocation : ", startLocation);
         System.out.printf("%-15s %s\n", "Destination : ", destination);
         System.out.printf("%-15s %s\n", "Date : ", date);
-        System.out.printf("%-25s %-25s %-10s %-10s\n",
-                "ScheduledStartTime", "ScheduledArrivalTime", "DriverName", "BusId");
+        System.out.printf("%-25s %-25s %-15s %-15s\n",
+                "ScheduledStartTime", "ScheduledArrivalTime",
+                "DriverName", "BusId");
         int rsTripNumber = 0;
         String rsStartTime = "";
         String rsArrivalTime = "";
@@ -53,13 +56,12 @@ public class TripOffering {
             rsStartTime = rs.getString("ScheduledStartTime");
             rsArrivalTime = rs.getString("ScheduledArrivalTime");
             rsDriverName = rs.getString("DriverName");
-            rsBusId = rs.getInt("BusId");   //Did not ask for trip number but let's talk about it
-            System.out.printf("%-25s %-25s %-10s %-25d\n", rsStartTime,
+            rsBusId = rs.getInt("BusId");
+            System.out.printf("%-25s %-25s %-15s %-15d\n", rsStartTime,
                     rsArrivalTime, rsDriverName, rsBusId);
         }
         rs.close();
     }
-
     public void deleteTheRecord() throws SQLException {
         System.out.print("Enter the Trip Number : ");
         int tripNumber = kb.nextInt();
@@ -77,7 +79,8 @@ public class TripOffering {
         }
     }
 
-    private boolean checkingRecord(int tripNumber, String date, String scheduledStartTime) throws SQLException {
+    private boolean checkingRecord(int tripNumber, String date,
+            String scheduledStartTime) throws SQLException {
         ResultSet rs = stmt.executeQuery("SELECT TripNumber, [Date],"
                 + " ScheduledStartTime, ScheduledArrivalTime "
                 + " FROM TripOffering WHERE TripNumber = "
@@ -91,13 +94,12 @@ public class TripOffering {
             rsTripNumber = rs.getInt("TripNumber");
             rsDate = rs.getString("Date");
             rsScheduledStartTime = rs.getString("ScheduledStartTime");
-            //System.out.println(rsTripNumber + "," + rsDate + "," + rsScheduledStartTime);
             rsScheduledArrivalTime = rs.getString("ScheduledArrivalTime");
-            // System.out.println(rsScheduledArrivalTime);
         }
         rs.close();
         if (rsTripNumber == 0 || (rsDate == null || rsDate.isEmpty())
-                || rsScheduledStartTime == null || rsScheduledStartTime.isEmpty()) {
+                || rsScheduledStartTime == null ||
+                rsScheduledStartTime.isEmpty()) {
             return true;
         }
         return false;
@@ -139,7 +141,8 @@ public class TripOffering {
                 }
                 kb.nextLine();
                 stmt.executeUpdate("INSERT INTO TripOffering VALUES "
-                        + "('" + tripNumber + "', '" + date + "', '" + startTime
+                        + "('" + tripNumber + "', '" + date + "', '"
+                        + startTime
                         + "', '" + arrivalTime + "', '"
                         + driverName + "', '"
                         + busId + "')");
@@ -179,10 +182,10 @@ public class TripOffering {
                         + tripNumber + " AND [Date] = " + "'" + date + "'"
                         + " AND ScheduledStartTime=" + "'" + startTime + "'");
             } else {
-                System.err.println("The driver does not exists.");
+                System.err.println("The driver does not exist.");
             }
         } else {
-            System.err.println("The record does not exists.");
+            System.err.println("The record does not exist.");
         }
     }
 
@@ -197,6 +200,7 @@ public class TripOffering {
         }
         rs.close();
         if ((rsDriver == null || rsDriver.isEmpty())) {
+            System.err.println("The driver does not exist!");
             return true;
         }
         return false;
@@ -242,11 +246,12 @@ public class TripOffering {
         }
         rs.close();
         if (rsBusId == 0) {
+            System.err.println("The bus does not exist!");
             return true;
         }
         return false;
     }
-    
+
     public void displayWeeklySchedule() throws SQLException {
         System.out.print("Enter the driver name : ");
         String driverName = kb.nextLine();
@@ -260,13 +265,13 @@ public class TripOffering {
                 + " Trip.StartLocationName, Trip.DestinationName"
                 + " FROM TripOffering, Trip"
                 + " WHERE TripOffering.DriverName = '" + driverName + "'"
-                + " AND TripOffering.[Date] = '" + date + "' AND Trip.TripNumber = TripOffering.TripNumber");
-//        System.out.printf("%-15s %s\n", "Date : ", date);
-//        System.out.printf("%-15s %s\n", "StartLocation : ", startLocation);
-//        System.out.printf("%-15s %s\n", "Destination : ", destination);
+                + " AND TripOffering.[Date] = '" + date
+                + "' AND Trip.TripNumber = TripOffering.TripNumber");
         System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s %-20s\n",
-                "Date", "StartLocation", "Destination Name", "Scheduled Start Time", "ScheduledArrivalTime", "DriverName", "BusId");
-        
+                "Date", "StartLocation", "Destination Name",
+                "Scheduled Start Time", "ScheduledArrivalTime",
+                "DriverName", "BusId");
+
         String rsStartTime = "";
         String rsArrivalTime = "";
         String rsDriverName = "";
@@ -280,7 +285,8 @@ public class TripOffering {
             rsBusId = rs.getInt("BusId");
             rsStartLocation = rs.getString("StartLocationName");
             rsDestination = rs.getString("DestinationName");
-            System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s %-20s\n", date, rsStartLocation, rsDestination, rsStartTime,
+            System.out.printf("%-20s %-20s %-20s %-20s %-20s %-20s %-20s\n",
+                    date, rsStartLocation, rsDestination, rsStartTime,
                     rsArrivalTime, rsDriverName, rsBusId);
         }
         rs.close();

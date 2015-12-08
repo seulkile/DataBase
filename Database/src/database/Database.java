@@ -19,6 +19,8 @@ import java.util.Scanner;
 public class Database {
 
     Scanner kb = new Scanner(System.in);
+    Connection con;
+    Statement stmt;
     boolean flag = true;
 
     public void start() throws ParseException {
@@ -29,16 +31,13 @@ public class Database {
             e.printStackTrace(System.err);
         }
 
-        Connection con;
-        Statement stmt;
-
         try {
             // Connect to the Profile database
             con = DriverManager.getConnection("jdbc:odbc:Lab4");
 
             // Create statement objects.
             stmt = con.createStatement();
-                     
+
             while (flag) {
                 int option = printMenu();
                 Menu(stmt,option);
@@ -65,7 +64,7 @@ public class Database {
         kb.nextLine();
         return option;
     }
-    
+
     private int printTripOfferingMenu(){
         System.out.println("1.Delete a tripOffering \n"
                 + "2.Add trips\n"
@@ -75,9 +74,10 @@ public class Database {
         return option;
     }
 
-    private void Menu(Statement stmt, int option) throws SQLException, ParseException {
+    private void Menu(Statement stmt, int option) throws SQLException,
+            ParseException {
         switch (option) {
-            case 1: //display all trip 
+            case 1: //display all trip
                 TripOffering tripOffering = new TripOffering(stmt);
                 tripOffering.searchTheTripOffering();
                 break;
@@ -106,7 +106,7 @@ public class Database {
                 bus1.deleteBus();
                 break;
             case 8: //record the actual data of a given trip offering
-                ActualTripStopInfo ATSI = new ActualTripStopInfo(stmt);
+                ActualTripStopInfo ATSI = new ActualTripStopInfo(con);
                 ATSI.recordActualTripStopInfo();
                 break;
             case 9: //exit
@@ -126,7 +126,8 @@ public class Database {
         db.start();
     }
 
-    private void offeringMenu(Statement stmt, int offeringOption) throws SQLException {
+    private void offeringMenu(Statement stmt, int offeringOption)
+            throws SQLException {
         TripOffering tr = new TripOffering(stmt);
         switch(offeringOption){
             case 1:  //delete a offering
@@ -143,7 +144,7 @@ public class Database {
                 break;
             default:
                 System.out.println("It is an invalid input.");
-                break;      
+                break;
         }
     }
 

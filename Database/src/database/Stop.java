@@ -27,12 +27,14 @@ public class Stop {
         stmt.execute(createStop);
     }
 
-    public void addStop(String stopNumber, String stopAddress) throws SQLException {
+    public void addStop(String stopNumber, String stopAddress)
+            throws SQLException {
         stmt.execute("INSERT INTO Stop VALUES "
                 + "('" + stopNumber + "', '" + stopAddress + "')");
     }
 
     public void deleteStop(String stopNumber) throws SQLException {
-        stmt.executeUpdate("DELETE * FROM Stop WHERE busId = "+stopNumber+"; ");
+        stmt.executeUpdate("DELETE * FROM Stop WHERE busId = "+stopNumber
+                +"; ");
     }
 }

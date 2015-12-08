@@ -12,7 +12,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author Seulki
+ * @author Seulki + Raymond
  */
 public class TripStopInfo {
 
@@ -24,10 +24,12 @@ public class TripStopInfo {
     }
 
     public void displayStopInfo() throws SQLException {
-        String[] columns = {"TripNumber", "StopNumber", "SequenceNumber", "DrivingTime"};
+        String[] columns = {"TripNumber", "StopNumber", "SequenceNumber",
+            "DrivingTime"};
         System.out.print("Enter the TripNumber : ");
         int tripNumber = kb.nextInt();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM TripStopInfo WHERE TripNumber = "+
+        ResultSet rs = stmt.executeQuery("SELECT * FROM TripStopInfo"
+                + " WHERE TripNumber = "+
                 tripNumber);
         for(String s : columns){
             System.out.printf("%-15s ",s);
@@ -42,10 +44,10 @@ public class TripStopInfo {
             rsStopNumber = rs.getInt("StopNumber");
             rsSeNumber = rs.getInt("SequenceNumber");
             DrivingTime = rs.getString("DrivingTime");
-            System.out.printf("%-15d %-15d %-15d %-15s\n\n" , rsTripNumber,rsStopNumber,
+            System.out.printf("%-15d %-15d %-15d %-15s\n\n" ,
+                    rsTripNumber,rsStopNumber,
                     rsSeNumber,DrivingTime);
         }
-        
         rs.close();
     }
 }

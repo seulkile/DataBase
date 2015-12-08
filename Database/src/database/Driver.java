@@ -45,7 +45,8 @@ public class Driver {
         System.out.print("Enter a driverName : ");
         String driverName = kb.nextLine();
         if (checkingDriver(driverName)) {
-            stmt.executeUpdate("DELETE * FROM driverName WHERE driverName = " + driverName + "; ");
+            stmt.executeUpdate("DELETE * FROM driverName WHERE driverName = "
+                    + driverName + "; ");
         } else {
             System.err.println("The driver does not exist.");
         }
@@ -59,7 +60,7 @@ public class Driver {
         String rsName = "";
         while (rs.next()) {
             rsName = rs.getString("DriverName");
-            
+
         }
         System.out.println(rsName);
         if (rsName.equals("")) {

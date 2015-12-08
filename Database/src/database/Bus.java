@@ -43,7 +43,7 @@ public class Bus {
             stmt.execute("INSERT INTO Bus VALUES "
                     + "('" + busId + "', '" + model + "', '" + year + "')");
         } else {
-            System.err.println("The Bus ID is already exist.");
+            System.err.println("The Bus ID already exists.");
         }
     }
 
@@ -51,9 +51,17 @@ public class Bus {
         System.out.print("Enter a BusId (int) : ");
         int busId = kb.nextInt();
         if (checkingBus(busId)) {
-            stmt.executeUpdate("DELETE * FROM Bus WHERE busId = " + busId + "; ");
-        } else { 
-            System.err.println("The Bus doesnot exist. ");
+            try{
+                stmt.executeUpdate("DELETE * FROM Bus WHERE busId = "
+                        + busId + "; ");
+            }
+            catch(SQLException e)
+            {
+                System.err.println("Bus ID is referenced by other tables!");
+            }
+
+        } else {
+            System.err.println("The Bus does not exist. ");
         }
     }
 
